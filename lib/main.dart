@@ -1,127 +1,20 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_wan_android/app/wan_app.dart';
 import 'package:flutter_wan_android/db/wan_data_store.dart';
 import 'package:flutter_wan_android/http/core/wan_net_error.dart';
 import 'package:flutter_wan_android/http/dao/wx_article_dao.dart';
 
 void main() {
-  runApp(MyApp());
-}
+  runApp(WanApp());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    WanDataStore.preInit();
-  }
-
-  void _incrementCounter() {
-    /*setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });*/
-
-    // testGetArticle();
-
-    testDataStore();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+  ///沉浸式状态栏
+  if (Platform.isAndroid) {
+    SystemUiOverlayStyle systemUiOverlayStyle =
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
 
   void testGetArticle() async {
@@ -141,3 +34,89 @@ class _MyHomePageState extends State<MyHomePage> {
     print(value);
   }
 }
+
+/*class WanRouteDelegate extends RouterDelegate<WanRoutePath>
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin<WanRoutePath> {
+  final GlobalKey<NavigatorState> navigatorKey;
+
+  //为navigator设置一个key，必要的时候可以通过navigatorKey.currentState来获取到NavigatorState对象
+  WanRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>();
+  RouteStatus _routeStatus = RouteStatus.home;
+  List<MaterialPage> pages = [];
+  VideoModel videoModel;
+
+  @override
+  Widget build(BuildContext context) {
+    var index = getPageIndex(pages, routeStatus);
+
+    List<MaterialPage> tempPages = pages;
+    if (index != -1) {
+      //要打开的页面在栈中已存在，则将该页面和它上面的所有页面进行出栈
+      //tips 具体规则可以根据需要进行调整，这里要求栈中只允许有一个同样的页面的实例
+      tempPages = tempPages.sublist(0, index);
+    }
+    var page;
+    if (routeStatus == RouteStatus.home) {
+      //跳转首页时将栈中其他页面进行出栈，因为首页不可回退
+      pages.clear();
+      page = pageWrap(FirstPage(
+        onJumpToDetail: (videoModel) {
+          this.videoModel = videoModel;
+          notifyListeners();
+        },
+      ));
+    } else {}
+    //管理路由栈
+    pages = [
+      pageWrap(FirstPage(
+        onJumpToDetail: (videoModel) {
+          this.videoModel = videoModel;
+          notifyListeners();
+        },
+      )),
+      if (videoModel != null) pageWrap(SecondPage(videoModel))
+    ];
+    return Navigator(
+      key: navigatorKey,
+      pages: pages,
+      onPopPage: (route, result) {
+        //在这里可以控制是否可以返回
+        return route.didPop(result);
+      },
+    );
+  }
+
+  RouteStatus get routeStatus {
+    return _routeStatus;
+  }
+
+  @override
+  Future<void> setNewRoutePath(WanRoutePath path) async {}
+}
+
+///可缺省，主要应用于web,持有RouteInformationProvider提供的RouteInformation,可以将其解析为我们定义的数据类型
+class WanRouteInformationParser extends RouteInformationParser {
+  @override
+  Future parseRouteInformation(RouteInformation routeInformation) async {
+    final uri = Uri.parse(routeInformation.location);
+    print('uri:$uri');
+    if (uri.pathSegments.length == 0) {
+      return WanRoutePath.home();
+    }
+    return WanRoutePath.detail();
+  }
+}
+
+///定义路由数据
+class WanRoutePath {
+  final String location;
+
+  WanRoutePath.home() : location = "/";
+
+  WanRoutePath.detail() : location = "/detail";
+}
+
+///创建页面
+pageWrap(Widget child) {
+  return MaterialPage(key: ValueKey(child.hashCode), child: child);
+}*/
