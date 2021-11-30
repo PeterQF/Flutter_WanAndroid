@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wan_android/app/app_resource.dart';
 import 'package:flutter_wan_android/app/wan_color.dart';
 import 'package:flutter_wan_android/db/wan_data_store.dart';
 import 'package:flutter_wan_android/page/home_page.dart';
@@ -18,43 +19,43 @@ class _RootPageState extends State<RootPage> {
 
   List<Image> _tabNormalImages = [
     Image.asset(
-      'img/tab_home_normal.png',
+      ImageHelper.loadAssets('img/tab_home_normal.png'),
       width: _imageSize,
       height: _imageSize,
     ),
-    Image.asset('img/tab_project_normal.png',
+    Image.asset(ImageHelper.loadAssets('img/tab_project_normal.png'),
         width: _imageSize,
         height: _imageSize,
         excludeFromSemantics: true,
         gaplessPlayback: true),
-    Image.asset('img/tab_summary_normal.png',
+    Image.asset(ImageHelper.loadAssets('img/tab_summary_normal.png'),
         width: _imageSize,
         height: _imageSize,
         excludeFromSemantics: true,
         gaplessPlayback: true),
-    Image.asset('img/tab_user_normal.png',
+    Image.asset(ImageHelper.loadAssets('img/tab_user_normal.png'),
         width: _imageSize,
         height: _imageSize,
         excludeFromSemantics: true,
         gaplessPlayback: true)
   ];
   List<Image> _tabSelectedImages = [
-    Image.asset('img/tab_home_selected.png',
+    Image.asset(ImageHelper.loadAssets('img/tab_home_selected.png'),
         width: _imageSize,
         height: _imageSize,
         excludeFromSemantics: true,
         gaplessPlayback: true),
-    Image.asset('img/tab_project_selected.png',
+    Image.asset(ImageHelper.loadAssets('img/tab_project_selected.png'),
         width: _imageSize,
         height: _imageSize,
         excludeFromSemantics: true,
         gaplessPlayback: true),
-    Image.asset('img/tab_summary_selected.png',
+    Image.asset(ImageHelper.loadAssets('img/tab_summary_selected.png'),
         width: _imageSize,
         height: _imageSize,
         excludeFromSemantics: true,
         gaplessPlayback: true),
-    Image.asset('img/tab_user_selected.png',
+    Image.asset(ImageHelper.loadAssets('img/tab_user_selected.png'),
         width: _imageSize,
         height: _imageSize,
         excludeFromSemantics: true,
@@ -63,8 +64,8 @@ class _RootPageState extends State<RootPage> {
 
   @override
   void initState() {
-    super.initState();
     setupApp();
+    super.initState();
   }
 
   @override
@@ -112,7 +113,5 @@ class _RootPageState extends State<RootPage> {
     }
   }
 
-  void setupApp() async {
-    WanDataStore.preInit();
-  }
+  void setupApp() async {}
 }

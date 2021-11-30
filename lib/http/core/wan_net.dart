@@ -13,7 +13,7 @@ class WanNet {
     return _instance;
   }
 
-  Future fire(BaseRequest request) async {
+  Future<WanResponse<dynamic>> fire(BaseRequest request) async {
     WanResponse response;
     var error;
     try {
@@ -29,9 +29,7 @@ class WanNet {
     if (response == null) {
       printLog(error);
     }
-    var result = response.data;
-    printLog(result);
-    var errorCode = response.errorCode;
+    return response;
   }
 
   Future<dynamic> send<T>(BaseRequest request) async {

@@ -1,58 +1,21 @@
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WanDataStore {
-  SharedPreferences prefs;
-  WanDataStore._() {
-    init();
+  /// app全局配置 eg:theme
+  static SharedPreferences sharedPreferences;
+
+  /// 临时目录 eg: cookie
+  static Directory temporaryDirectory;
+
+  /// 必备数据的初始化操作
+  ///
+  /// 由于是同步操作会导致阻塞,所以应尽量减少存储容量
+  static init() async {
+    // async 异步操作
+    // sync 同步操作
+    temporaryDirectory = await getTemporaryDirectory();
+    sharedPreferences = await SharedPreferences.getInstance();
   }
-
-  WanDataStore._pre(SharedPreferences prefs) {
-    this.prefs = prefs;
-  }
-
-  static WanDataStore _instance;
-
-  // 预初始化，防止在使用get时，prefs还未完成初始化
-  static Future<WanDataStore> preInit() async {
-    if (_instance == null) {
-      var prefs = await SharedPreferences.getInstance();
-      _instance = WanDataStore._pre(prefs);
-    }
-    return _instance;
-  }
-
-  static WanDataStore getInstance() {
-    if (_instance == null) {
-      _instance = WanDataStore._();
-    }
-    return _instance;
-  }
-
-  void init() async {
-    if (prefs == null) {
-      prefs = await SharedPreferences.getInstance();
-    }
-  }
-
-  void setString(String key, String value) {
-    prefs.setString(key, value);
-  }
-
-  void setDouble(String key, double value) {
-    prefs.setDouble(key, value);
-  }
-
-  void setInt(String key, int value) {
-    prefs.setInt(key, value);
-  }
-
-  void setBool(String key, bool value) {
-    prefs.setBool(key, value);
-  }
-
-  void setStringList(String key, List<String> value) {
-    prefs.setStringList(key, value);
-  }
-
-  T get<T>(String key) => prefs.get(key);
 }
