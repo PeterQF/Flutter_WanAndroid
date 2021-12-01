@@ -5,6 +5,7 @@ import 'package:flutter_wan_android/model/article_model.dart';
 import 'package:flutter_wan_android/provider/provider_widget.dart';
 import 'package:flutter_wan_android/view_model/home_view_model.dart';
 import 'package:flutter_wan_android/provider/view_state_widget.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -39,16 +40,27 @@ class _HomePageState extends State<HomePage> {
           builder: (context, model, child) {
             if (model.isLoading) {
               return ViewStateLoadingWidget();
-            } else {
-              return ListView.builder(
+            } else if (model.isError || model.list.isEmpty) {
+              return ViewStateWidget(
+                  onPressed: model.initData(), message: "加载失败");
+            }
+            return SmartRefresher(
+              controller: model.refreshController,
+              header: MaterialClassicHeader(color: WanColor.lightBlue,),
+              footer: ClassicFooter(loadingText: "加载中",),
+              onRefresh: model.refresh,
+              onLoading: model.loadMore,
+              enablePullDown: true,
+              enablePullUp: true,
+              child: ListView.builder(
                 //越界回弹
                 // physics: BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
                   return _buildArticleItem(model.list[index]);
                 },
                 itemCount: model.list.length,
-              );
-            }
+              ),
+            );
           },
         ));
   }
