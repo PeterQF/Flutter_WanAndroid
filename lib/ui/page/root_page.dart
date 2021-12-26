@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android/app/app_resource.dart';
 import 'package:flutter_wan_android/app/wan_color.dart';
-import 'package:flutter_wan_android/db/wan_data_store.dart';
-import 'package:flutter_wan_android/page/home_page.dart';
-import 'package:flutter_wan_android/page/project_page.dart';
-import 'package:flutter_wan_android/page/summary_page.dart';
-import 'package:flutter_wan_android/page/user_page.dart';
-import 'package:flutter_wan_android/widget/double_tap_back_exit_app.dart';
+import 'package:flutter_wan_android/ui/page/project_page.dart';
+import 'package:flutter_wan_android/ui/page/summary_page.dart';
+import 'package:flutter_wan_android/ui/page/user_page.dart';
+import 'package:flutter_wan_android/ui/widget/double_tap_back_exit_app.dart';
+
+import 'home_page.dart';
 
 class RootPage extends StatefulWidget {
   @override
@@ -14,8 +14,9 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
-  int _tabIndex = 0;
   static const double _imageSize = 26.0;
+  var _pageController = PageController();
+  int _selectedIndex = 0;
 
   List<Image> _tabNormalImages = [
     Image.asset(
@@ -63,19 +64,21 @@ class _RootPageState extends State<RootPage> {
   ];
 
   @override
-  void initState() {
-    setupApp();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return DoubleTapBackExitApp(
-      key: Key("1001"),
       child: Scaffold(
-        body: IndexedStack(
-          children: [HomePage(), ProjectPage(), SummaryPage(), UserPage()],
-          index: _tabIndex,
+        body: PageView.builder(
+          itemBuilder: (ctx, index) => pages[index],
+          itemCount: pages.length,
+          controller: _pageController,
+          physics: NeverScrollableScrollPhysics(),
+          onPageChanged: (index) {
+            if (mounted) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            }
+          },
         ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
@@ -92,13 +95,9 @@ class _RootPageState extends State<RootPage> {
             BottomNavigationBarItem(icon: getTabIcon(2), label: '体系'),
             BottomNavigationBarItem(icon: getTabIcon(3), label: '我的')
           ],
-          currentIndex: _tabIndex,
+          currentIndex: _selectedIndex,
           onTap: (index) {
-            if (mounted) {
-              setState(() {
-                _tabIndex = index;
-              });
-            }
+            _pageController.jumpToPage(index);
           },
         ),
       ),
@@ -106,12 +105,17 @@ class _RootPageState extends State<RootPage> {
   }
 
   Image getTabIcon(int index) {
-    if (index == _tabIndex) {
+    if (index == _selectedIndex) {
       return _tabSelectedImages[index];
     } else {
       return _tabNormalImages[index];
     }
   }
 
-  void setupApp() async {}
+  List<Widget> pages = <Widget>[
+    HomePage(),
+    ProjectPage(),
+    SummaryPage(),
+    UserPage()
+  ];
 }
