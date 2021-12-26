@@ -1,11 +1,11 @@
 import 'package:flutter_wan_android/http/wan_repository.dart';
-import 'package:flutter_wan_android/model/project_category_model.dart';
+import 'package:flutter_wan_android/model/category_model.dart';
 import 'package:flutter_wan_android/provider/view_state_list_model.dart';
 import 'package:flutter_wan_android/provider/view_state_refresh_list_model.dart';
 
-class ProjectCategoryViewModel extends ViewStateListModel<ProjectCategoryInfo> {
+class ProjectCategoryViewModel extends ViewStateListModel<CategoryInfo> {
   @override
-  Future<List<ProjectCategoryInfo>> loadData() async {
+  Future<List<CategoryInfo>> loadData() async {
     return await WanRepository.fetchProjectCategory();
   }
 }

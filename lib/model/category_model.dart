@@ -4,23 +4,23 @@
 
 import 'dart:convert';
 
-class ProjectCategoryResponse {
-  ProjectCategoryResponse({
+class CategoryResponse {
+  CategoryResponse({
     this.data,
     this.errorCode,
     this.errorMsg,
   });
 
-  final List<ProjectCategoryInfo> data;
+  final List<CategoryInfo> data;
   final int errorCode;
   final String errorMsg;
 
-  factory ProjectCategoryResponse.fromJson(String str) => ProjectCategoryResponse.fromMap(json.decode(str));
+  factory CategoryResponse.fromJson(String str) => CategoryResponse.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory ProjectCategoryResponse.fromMap(Map<String, dynamic> json) => ProjectCategoryResponse(
-    data: List<ProjectCategoryInfo>.from(json["data"].map((x) => ProjectCategoryInfo.fromMap(x))),
+  factory CategoryResponse.fromMap(Map<String, dynamic> json) => CategoryResponse(
+    data: List<CategoryInfo>.from(json["data"].map((x) => CategoryInfo.fromMap(x))),
     errorCode: json["errorCode"],
     errorMsg: json["errorMsg"],
   );
@@ -32,8 +32,8 @@ class ProjectCategoryResponse {
   };
 }
 
-class ProjectCategoryInfo {
-  ProjectCategoryInfo({
+class CategoryInfo {
+  CategoryInfo({
     this.children,
     this.courseId,
     this.id,
@@ -53,12 +53,12 @@ class ProjectCategoryInfo {
   final bool userControlSetTop;
   final int visible;
 
-  factory ProjectCategoryInfo.fromJson(String str) => ProjectCategoryInfo.fromMap(json.decode(str));
+  factory CategoryInfo.fromJson(String str) => CategoryInfo.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory ProjectCategoryInfo.fromMap(Map<String, dynamic> json) => ProjectCategoryInfo(
-    children: List<dynamic>.from(json["children"].map((x) => x)),
+  factory CategoryInfo.fromMap(Map<String, dynamic> json) => CategoryInfo(
+    children: List<CategoryInfo>.from(json["children"].map((it) => CategoryInfo.fromMap(it))),
     courseId: json["courseId"],
     id: json["id"],
     name: json["name"],
