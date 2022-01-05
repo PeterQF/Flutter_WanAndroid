@@ -127,17 +127,16 @@ class ViewStateModel extends ChangeNotifier {
           message = e.message;
         }
       }
-    } else if(e is Error || e is Exception) {
-      message = e.message;
+    } else if (e is Exception) {
+      message = e.toString();
+    } else if (e is Error) {
+      message = e.stackTrace.toString();
     } else {
       message = "未知错误";
     }
     viewState = ViewState.error;
-    _viewStateError = ViewStateError(
-      errorType,
-      errorMessage: e.toString(),
-      message: message
-    );
+    _viewStateError =
+        ViewStateError(errorType, errorMessage: e.toString(), message: message);
     printErrorStack(e, stackTrace);
     onError(viewStateError);
   }
@@ -177,7 +176,6 @@ class ViewStateModel extends ChangeNotifier {
     super.dispose();
   }
 }
-
 
 /// [e]为错误类型 :可能为 Error , Exception ,String
 /// [s]为堆栈信息
