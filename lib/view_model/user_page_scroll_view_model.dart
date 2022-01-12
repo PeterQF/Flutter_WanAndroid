@@ -45,7 +45,9 @@ class UserPageScrollViewModel extends ViewStateRefreshListModel {
   }
 
   init() {
-    _maxPicHeight = MediaQuery.of(context).size.height / 2;
+    double height = MediaQuery.of(context).size.height;
+    print("height = $height");
+    _maxPicHeight = MediaQuery.of(context).size.height / 3;
     double statusBarHeight = MediaQuery.of(context).padding.top;
     anim = Tween(begin: 0.0, end: 0.0).animate(animationController);
     _scrollController.addListener(() {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android/app/wan_color.dart';
 import 'package:flutter_wan_android/model/article_model.dart';
+import 'package:flutter_wan_android/route/wan_route.dart';
 
 class ArticleItemWidget extends StatelessWidget {
   final ArticleInfo articleInfo;
@@ -10,7 +11,9 @@ class ArticleItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).pushNamed(RouteName.articleDetail, arguments: articleInfo);
+      },
       highlightColor: WanColor.color3358B2DC,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),

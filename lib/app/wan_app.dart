@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android/app/scroll_behavior.dart';
 import 'package:flutter_wan_android/app/wan_color.dart';
+import 'package:flutter_wan_android/route/wan_route.dart';
 import 'package:flutter_wan_android/ui/page/root_page.dart';
 
 class WanApp extends StatelessWidget {
@@ -17,7 +18,8 @@ class WanApp extends StatelessWidget {
           dividerColor: Color(0xffeeeeee),
           brightness: Brightness.light,
           scaffoldBackgroundColor: WanColor.paper),
-      home: RootPage()
+      onGenerateRoute: WanRoute.generateRoute,
+      initialRoute: RouteName.splash,
     );
   }
 }

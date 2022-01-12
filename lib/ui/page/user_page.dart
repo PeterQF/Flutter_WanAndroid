@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_wan_android/app/app_resource.dart';
 import 'package:flutter_wan_android/app/wan_color.dart';
 import 'package:flutter_wan_android/provider/provider_widget.dart';
@@ -28,7 +29,8 @@ class _UserPageState extends State<UserPage>
     super.build(context);
     return Scaffold(
       body: ProviderWidget(
-        model: UserPageScrollViewModel(context, animationController, ScrollController()),
+        model: UserPageScrollViewModel(
+            context, animationController, ScrollController()),
         onModelReady: (model) => model.init(),
         builder: (context, model, child) {
           return Listener(
@@ -59,7 +61,10 @@ class _UserPageState extends State<UserPage>
                       primary: false,
                       // 导航栏下面是否一直显示阴影
                       forceElevated: false,
-                      expandedHeight: userPageAppBarHeight + model.extraPicHeight,
+                      expandedHeight:
+                          userPageAppBarHeight + model.extraPicHeight,
+                      backgroundColor: WanColor.lightBlue,
+                      systemOverlayStyle: SystemUiOverlayStyle.light,
                       flexibleSpace: FlexibleSpaceBar(
                           background: SliverTopBar(model),
                           // 先收缩flexibleSpace部分再滑动列表
