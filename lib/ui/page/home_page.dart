@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_swiper_plus/flutter_swiper_plus.dart';
 import 'package:flutter_wan_android/app/wan_color.dart';
+import 'package:flutter_wan_android/model/article_model.dart';
+import 'package:flutter_wan_android/model/banner_model.dart';
 import 'package:flutter_wan_android/provider/provider_widget.dart';
+import 'package:flutter_wan_android/route/wan_route.dart';
 import 'package:flutter_wan_android/ui/widget/animated_switcher_widget.dart';
 import 'package:flutter_wan_android/ui/widget/article_item_widget.dart';
 import 'package:flutter_wan_android/view_model/home_view_model.dart';
@@ -141,9 +144,17 @@ class BannerWidget extends StatelessWidget {
       loop: true,
       pagination: SwiperPagination(),
       itemBuilder: (context, index) {
-        return Image.network(
-          homeViewModel.banners[index].imagePath,
-          fit: BoxFit.fill,
+        BannerInfo banner = homeViewModel.banners[index];
+        return GestureDetector(
+          child: Image.network(
+            banner.imagePath,
+            fit: BoxFit.fill,
+          ),
+          onTap: () {
+            Navigator.of(context).pushNamed(RouteName.articleDetail,
+                arguments: ArticleInfo(
+                    id: banner.id, title: banner.title, link: banner.url));
+          },
         );
       },
     );

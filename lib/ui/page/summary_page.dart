@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_wan_android/app/wan_color.dart';
+import 'package:flutter_wan_android/model/structure_list_tab_model.dart';
 import 'package:flutter_wan_android/model/category_model.dart';
 import 'package:flutter_wan_android/model/navigation_site_model.dart';
 import 'package:flutter_wan_android/provider/provider_widget.dart';
 import 'package:flutter_wan_android/provider/view_state_widget.dart';
+import 'package:flutter_wan_android/route/wan_route.dart';
 import 'package:flutter_wan_android/ui/widget/tab_bar_widget.dart';
 import 'package:flutter_wan_android/view_model/summary_view_model.dart';
 
@@ -108,7 +110,10 @@ class StructureCategoryWidget extends StatelessWidget {
                         maxLines: 1,
                         style: TextStyle(color: WanColor.color707070),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, RouteName.structureList,
+                            arguments: StructureListTab(categoryInfo, index));
+                      },
                     )),
           )
         ],
@@ -186,7 +191,11 @@ class NavigationCategoryWidget extends StatelessWidget {
                         maxLines: 1,
                         style: TextStyle(color: WanColor.color707070),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(
+                            RouteName.articleDetail,
+                            arguments: navigationSite.articles[index]);
+                      },
                     )),
           )
         ],
