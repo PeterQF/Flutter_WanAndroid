@@ -4,6 +4,8 @@ import 'package:flutter_wan_android/model/article_model.dart';
 import 'package:flutter_wan_android/model/structure_list_tab_model.dart';
 import 'package:flutter_wan_android/route/page_route_anim.dart';
 import 'package:flutter_wan_android/ui/page/article_detail_page.dart';
+import 'package:flutter_wan_android/ui/page/login_page.dart';
+import 'package:flutter_wan_android/ui/page/register_page.dart';
 import 'package:flutter_wan_android/ui/page/structure_tab_page.dart';
 import 'package:flutter_wan_android/ui/page/root_page.dart';
 import 'package:flutter_wan_android/ui/page/splash_page.dart';
@@ -34,6 +36,10 @@ class WanRoute {
         return CupertinoPageRoute(builder: (_) {
           return StructureTabPage(articleTab.categoryInfo, articleTab.index);
         });
+      case RouteName.login:
+        return MaterialPageRoute(builder: (context) => LoginPage());
+      case RouteName.register:
+        return MaterialPageRoute(builder: (context) => RegisterPage());
       default:
         return CupertinoPageRoute(
             builder: (_) => Scaffold(

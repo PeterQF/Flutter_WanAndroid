@@ -18,4 +18,16 @@ class WanDataStore {
     temporaryDirectory = await getTemporaryDirectory();
     sharedPreferences = await SharedPreferences.getInstance();
   }
+
+  static saveObject(key, value) async {
+    if (sharedPreferences != null) {
+      await sharedPreferences.setString(key, value);
+    }
+  }
+
+  static getObject(key) {
+    if (sharedPreferences != null) {
+      sharedPreferences.get(key);
+    }
+  }
 }

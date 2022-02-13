@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wan_android/app/app_resource.dart';
 import 'package:flutter_wan_android/app/wan_color.dart';
 import 'package:flutter_wan_android/route/wan_route.dart';
+import 'package:flutter_wan_android/utils/screen_utils.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key key}) : super(key: key);
@@ -23,10 +25,45 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AnimatedCountdown(
-        context: context,
-        animation: StepTween(begin: 3, end: 0).animate(_countdownController),
-      ),
+      body: WillPopScope(
+        onWillPop: () => Future.value(false),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                width: Screen.width / 2,
+                height: Screen.width / 2,
+                child: Image.asset(ImageHelper.loadAssets('image/image_splash.png')),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: SafeArea(
+                child: InkWell(
+                    onTap: () {
+                      nextPage(context);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                      margin: EdgeInsets.only(right: 20, bottom: 20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(40),
+                        color: Colors.grey.withAlpha(100),
+                      ),
+                      child: AnimatedCountdown(
+                        context: context,
+                        animation: StepTween(begin: 3, end: 0)
+                            .animate(_countdownController),
+                      ),
+                    )
+                ),
+              ),
+            )
+          ],
+        ),
+      )
     );
   }
 }

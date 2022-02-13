@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_wan_android/app/wan_color.dart';
 import 'package:flutter_wan_android/model/article_model.dart';
 import 'package:flutter_wan_android/provider/view_state_widget.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class ArticleDetailPage extends StatefulWidget {
@@ -40,7 +41,9 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Share.share(widget.articleInfo.title + ' ' + widget.articleInfo.link);
+            },
             icon: Icon(Icons.share_rounded),
           )
         ],

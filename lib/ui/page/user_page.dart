@@ -3,7 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_wan_android/app/app_resource.dart';
 import 'package:flutter_wan_android/app/wan_color.dart';
 import 'package:flutter_wan_android/provider/provider_widget.dart';
+import 'package:flutter_wan_android/route/wan_route.dart';
+import 'package:flutter_wan_android/utils/screen_utils.dart';
 import 'package:flutter_wan_android/view_model/user_page_scroll_view_model.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 const userPageAppBarHeight = 250;
@@ -33,55 +36,59 @@ class _UserPageState extends State<UserPage>
             context, animationController, ScrollController()),
         onModelReady: (model) => model.init(),
         builder: (context, model, child) {
-          return Listener(
-            onPointerMove: (result) {
-              model.updatePicHeight(result.position.dy);
-            },
-            onPointerUp: (event) {
-              model.runAnimate();
-              animationController.forward(from: 0);
-            },
-            child: SmartRefresher(
-                controller: model.refreshController,
-                header: MaterialClassicHeader(),
-                onRefresh: model.refresh,
-                child: CustomScrollView(
-                  physics: const ClampingScrollPhysics(),
-                  controller: model.scrollController,
-                  slivers: [
-                    SliverAppBar(
-                      // 先滑动列表到顶部在展开SliverAppBar
-                      // 设置为true时，向下滑动时，即使当前CustomScrollView不在顶部，SliverAppBar也会跟着一起向下出现
-                      floating: false,
-                      pinned: true,
-                      // 默认情况下为true，则指定了expandedHeight的高度，expandedHeight会加上状态栏高度的
-                      // 比如指定了expandedHeight = 200，假设状态栏高度60，则真正的expandedHeight值为260
-                      // 如果primary为true，则SliverTopBar的高度需要加上状态栏高度，否则会显示不完整
-                      // 所以这里把primary改为false，不包含状态栏高度，则SliverTopBar的高度不需要再加上状态栏高度
-                      primary: false,
-                      // 导航栏下面是否一直显示阴影
-                      forceElevated: false,
-                      expandedHeight:
-                          userPageAppBarHeight + model.extraPicHeight,
-                      backgroundColor: WanColor.lightBlue,
-                      systemOverlayStyle: SystemUiOverlayStyle.light,
-                      flexibleSpace: FlexibleSpaceBar(
-                          background: SliverTopBar(model),
-                          // 先收缩flexibleSpace部分再滑动列表
-                          // 背景 固定到位，直到达到最小范围。 默认是CollapseMode.parallax(将以视差方式滚动。)，还有一个是none，滚动没有效果
-                          collapseMode: CollapseMode.pin),
-                    ),
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                        return Container(
-                          height: 20,
-                          child: Text("Peter$index"),
-                        );
-                      }, childCount: 50),
-                    )
-                  ],
-                )),
-          );
+          if (model.isLogin) {
+            return Listener(
+              onPointerMove: (result) {
+                model.updatePicHeight(result.position.dy);
+              },
+              onPointerUp: (event) {
+                model.runAnimate();
+                animationController.forward(from: 0);
+              },
+              child: SmartRefresher(
+                  controller: model.refreshController,
+                  header: MaterialClassicHeader(),
+                  onRefresh: model.refresh,
+                  child: CustomScrollView(
+                    physics: const ClampingScrollPhysics(),
+                    controller: model.scrollController,
+                    slivers: [
+                      SliverAppBar(
+                        // 先滑动列表到顶部在展开SliverAppBar
+                        // 设置为true时，向下滑动时，即使当前CustomScrollView不在顶部，SliverAppBar也会跟着一起向下出现
+                        floating: false,
+                        pinned: true,
+                        // 默认情况下为true，则指定了expandedHeight的高度，expandedHeight会加上状态栏高度的
+                        // 比如指定了expandedHeight = 200，假设状态栏高度60，则真正的expandedHeight值为260
+                        // 如果primary为true，则SliverTopBar的高度需要加上状态栏高度，否则会显示不完整
+                        // 所以这里把primary改为false，不包含状态栏高度，则SliverTopBar的高度不需要再加上状态栏高度
+                        primary: false,
+                        // 导航栏下面是否一直显示阴影
+                        forceElevated: false,
+                        expandedHeight:
+                            userPageAppBarHeight + model.extraPicHeight,
+                        backgroundColor: WanColor.lightBlue,
+                        systemOverlayStyle: SystemUiOverlayStyle.light,
+                        flexibleSpace: FlexibleSpaceBar(
+                            background: SliverTopBar(model),
+                            // 先收缩flexibleSpace部分再滑动列表
+                            // 背景 固定到位，直到达到最小范围。 默认是CollapseMode.parallax(将以视差方式滚动。)，还有一个是none，滚动没有效果
+                            collapseMode: CollapseMode.pin),
+                      ),
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                          return Container(
+                            height: 20,
+                            child: Text("Peter$index"),
+                          );
+                        }, childCount: 50),
+                      )
+                    ],
+                  )),
+            );
+          } else {
+            return NoLoginPage();
+          }
         },
       ),
     );
@@ -194,6 +201,62 @@ class UserInfoWidget extends StatelessWidget {
           ],
         )
       ],
+    );
+  }
+}
+
+class NoLoginPage extends StatelessWidget {
+  const NoLoginPage({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: WanColor.white,
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        backgroundColor: WanColor.white,
+        elevation: 0,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.settings_rounded, color: WanColor.gray,),
+          )
+        ],
+      ),
+      body: Container(
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Lottie.asset(
+              "assets/lottie/no_login.json",
+              width: Screen.width / 1.3,
+              height: 160,
+              fit: BoxFit.fill,
+              alignment: Alignment.center,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                '😮 你竟然忘记登录 😮',
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+            ),
+            MaterialButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(RouteName.login);
+                },
+                child: Text(
+                  "去登录",
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
+                color: Theme.of(context).primaryColor,
+                shape: RoundedRectangleBorder(
+                    side: BorderSide.none,
+                    borderRadius: BorderRadius.circular(8)))
+          ],
+        ),
+      ),
     );
   }
 }

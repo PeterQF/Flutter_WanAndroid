@@ -10,6 +10,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await WanDataStore.init();
   runApp(WanApp());
+
   ///沉浸式状态栏
   if (Platform.isAndroid) {
     SystemUiOverlayStyle systemUiOverlayStyle =

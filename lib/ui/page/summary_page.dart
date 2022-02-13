@@ -29,7 +29,7 @@ class _SummaryPageState extends State<SummaryPage>
           systemOverlayStyle: SystemUiOverlayStyle.light,
           backgroundColor: WanColor.lightBlue,
           centerTitle: true,
-          title: buildTabBar(context, tabs),
+          title: TabBarWidget(tabs),
         ),
         body: TabBarView(
           children: [StructureCategoryList(), NavigationCategoryList()],

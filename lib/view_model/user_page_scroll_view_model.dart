@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wan_android/db/wan_data_store.dart';
+import 'package:flutter_wan_android/model/user_model.dart';
 import 'package:flutter_wan_android/provider/view_state_refresh_list_model.dart';
 import 'package:flutter_wan_android/ui/page/user_page.dart';
 
 class UserPageScrollViewModel extends ViewStateRefreshListModel {
+
+  static const String kUser = "kUser";
+  UserData _user;
+  bool get isLogin => _user != null;
+
   final BuildContext context;
   final AnimationController animationController;
   // 记录上一次移动的距离
@@ -55,6 +62,14 @@ class UserPageScrollViewModel extends ViewStateRefreshListModel {
         updatePicHeight(0.0);
       }
     });
+    var userMap = WanDataStore.getObject(kUser);
+    _user = userMap == null ? null : UserData.fromMap(userMap);
+    notifyListeners();
+  }
+
+  updateUserState(UserData user) {
+    _user = user;
+    notifyListeners();
   }
 
   @override

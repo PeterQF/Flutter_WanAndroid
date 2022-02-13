@@ -64,7 +64,7 @@ class _ProjectPageState extends State<ProjectPage>
                         systemOverlayStyle: SystemUiOverlayStyle.light,
                         backgroundColor: WanColor.lightBlue,
                         title: Container(
-                          child: buildTabBar(context, categoryList.map((e) => e.name).toList()),
+                          child: TabBarWidget(categoryList.map((e) => e.name).toList()),
                         ),
                       ),
                       body: TabBarView(
