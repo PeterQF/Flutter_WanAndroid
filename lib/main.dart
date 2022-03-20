@@ -13,8 +13,8 @@ void main() async {
 
   ///沉浸式状态栏
   if (Platform.isAndroid) {
-    SystemUiOverlayStyle systemUiOverlayStyle =
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
 }

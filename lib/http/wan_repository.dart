@@ -3,6 +3,7 @@ import 'package:flutter_wan_android/model/article_model.dart';
 import 'package:flutter_wan_android/model/banner_model.dart';
 import 'package:flutter_wan_android/model/category_model.dart';
 import 'package:flutter_wan_android/model/navigation_site_model.dart';
+import 'package:flutter_wan_android/model/user_model.dart';
 
 class WanRepository {
   // 加载文章
@@ -50,5 +51,14 @@ class WanRepository {
         .map<NavigationSite>((item) => NavigationSite.fromMap(item))
         .toList();
     return categories;
+  }
+
+  // [WanNetClient._init]添加了拦截器 设置了自动cookie.
+  static Future login(String username, String password) async {
+    var response = await WanNetClient.getInstance.post('/user/login', queryParameters: {
+      'username': username,
+      'password': password,
+    });
+    return UserData.fromMap(response.data);
   }
 }

@@ -206,6 +206,7 @@ class UserInfoWidget extends StatelessWidget {
 }
 
 class NoLoginPage extends StatelessWidget {
+
   const NoLoginPage({Key key}) : super(key: key);
 
   @override
