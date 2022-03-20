@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,15 +20,20 @@ class WanDataStore {
     sharedPreferences = await SharedPreferences.getInstance();
   }
 
-  static saveObject(key, value) async {
+  static saveObject(String key, Object object) async {
     if (sharedPreferences != null) {
-      await sharedPreferences.setString(key, value);
+      await sharedPreferences.setString(key, jsonEncode(object));
     }
   }
 
-  static getObject(key) {
+  static getObjectJsonMap(String key) {
     if (sharedPreferences != null) {
-      sharedPreferences.get(key);
+      String data = sharedPreferences.getString(key);
+      if (data != null) {
+        Map<String, dynamic> responseJson = json.decode(data);
+        return responseJson;
+      }
     }
+    return null;
   }
 }

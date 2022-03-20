@@ -33,7 +33,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("build login page");
     return Scaffold(
         // backgroundColor: Colors.transparent,
         // 如果为 true，并且指定了 [appBar]，则 [body] 的高度将扩展为包括应用栏的高度
@@ -60,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                       return !model.isLoading;
                     },
                     child: LoginContainer(
-                        model, _nameController, _passwordController, _pwdFocus   ),
+                        model, _nameController, _passwordController, _pwdFocus),
                   );
                 },
               ),
@@ -83,8 +82,6 @@ class LoginContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // LoginViewModel loginViewModel = Provider.of<LoginViewModel>(context);
-    print("build login container");
     return Container(
       height: Screen.height,
       child: Stack(
@@ -140,6 +137,7 @@ class LoginContainer extends StatelessWidget {
                               onFieldSubmitted: (text) {
                                 FocusScope.of(context).requestFocus(pwdFocus);
                               },
+                              controller: nameController,
                             ),
                             CustomTextField(
                               hintText: "您的登录密码",
@@ -148,6 +146,7 @@ class LoginContainer extends StatelessWidget {
                                   color: Color.fromRGBO(142, 197, 252, 1.0)),
                               textInputAction: TextInputAction.done,
                               focusNode: pwdFocus,
+                              controller: passwordController,
                             ),
                             LoginButton(
                                 loginViewModel: loginViewModel,

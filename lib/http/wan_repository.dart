@@ -59,6 +59,6 @@ class WanRepository {
       'username': username,
       'password': password,
     });
-    return UserData.fromMap(response.data);
+    return User.fromJsonMap(response.data);
   }
 }

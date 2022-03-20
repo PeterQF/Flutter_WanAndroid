@@ -34,8 +34,9 @@ class ProjectArticleItemWidget extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 10),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: ImageHelper.loadNetImage(articleInfo.envelopePic,
-                    "image/image_zero", MediaQuery.of(context).size.width, 200),
+                child: ImageHelper.loadNetImage(articleInfo.envelopePic, MediaQuery.of(context).size.width, 200)
+                /*ImageHelper.loadNetImage(articleInfo.envelopePic,
+                    "image/image_zero", MediaQuery.of(context).size.width, 200)*/,
               ),
             ),
             Row(

@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_wan_android/app/app_resource.dart';
 import 'package:flutter_wan_android/app/wan_color.dart';
+import 'package:flutter_wan_android/model/user_model.dart';
 import 'package:flutter_wan_android/provider/provider_widget.dart';
 import 'package:flutter_wan_android/route/wan_route.dart';
 import 'package:flutter_wan_android/utils/screen_utils.dart';
+import 'package:flutter_wan_android/utils/wan_utils.dart';
 import 'package:flutter_wan_android/view_model/user_page_scroll_view_model.dart';
+import 'package:flutter_wan_android/view_model/user_view_model.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -106,22 +109,22 @@ class SliverTopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    String background = model.userViewModel.user.background;
     return Stack(
       children: [
         SizedBox(
-          width: screenWidth,
-          height: userPageAppBarHeight + model.extraPicHeight,
-          child: Image.asset(
-            ImageHelper.loadAssets("image/image_zero.JPG"),
-            fit: BoxFit.cover,
-          ),
-        ),
+            width: screenWidth,
+            height: userPageAppBarHeight + model.extraPicHeight,
+            child: Image.asset(
+              ImageHelper.loadAssets(WanUtils.isNull(background) ? "image/image_placeholder.png" : background),
+              fit: BoxFit.cover,
+            )),
         Positioned(
           left: 16,
           bottom: 10,
           // 这里设置left时如果设置的width为屏幕宽度，还需要把left减掉，否则最右边的控件会遮住left长度的部分
           width: screenWidth - 16,
-          child: UserInfoWidget(),
+          child: UserInfoWidget(model.userViewModel),
         )
       ],
     );
@@ -129,10 +132,14 @@ class SliverTopBar extends StatelessWidget {
 }
 
 class UserInfoWidget extends StatelessWidget {
-  const UserInfoWidget({Key key}) : super(key: key);
+  final UserViewModel userViewModel;
+
+  const UserInfoWidget(this.userViewModel, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    User userInfo = userViewModel.user;
+    String icon = userInfo.icon;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -143,14 +150,15 @@ class UserInfoWidget extends StatelessWidget {
             SizedBox(
               width: 80,
               height: 80,
-              child: CircleAvatar(
-                backgroundImage: AssetImage("assets/image/avatar.JPG"),
+              child: Image.asset(
+                ImageHelper.loadAssets(WanUtils.isNull(icon) ? "image/image_default_avatar.png" : icon),
+                fit: BoxFit.cover,
               ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                "Peter",
+                userInfo.nickname,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: WanColor.white,
@@ -172,18 +180,18 @@ class UserInfoWidget extends StatelessWidget {
         ),
         Row(
           children: [
-            Text("1176\n积分",
+            Text("-\n积分",
                 style: TextStyle(fontSize: 12, color: WanColor.white),
                 textAlign: TextAlign.center),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                "12\n等级",
+                "-\n等级",
                 style: TextStyle(fontSize: 12, color: WanColor.white),
                 textAlign: TextAlign.center,
               ),
             ),
-            Text("1609\n排名",
+            Text("-\n排名",
                 style: TextStyle(fontSize: 12, color: WanColor.white),
                 textAlign: TextAlign.center),
             Expanded(child: SizedBox.shrink()),
@@ -206,7 +214,6 @@ class UserInfoWidget extends StatelessWidget {
 }
 
 class NoLoginPage extends StatelessWidget {
-
   const NoLoginPage({Key key}) : super(key: key);
 
   @override
@@ -220,7 +227,10 @@ class NoLoginPage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.settings_rounded, color: WanColor.gray,),
+            icon: Icon(
+              Icons.settings_rounded,
+              color: WanColor.gray,
+            ),
           )
         ],
       ),

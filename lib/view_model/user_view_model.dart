@@ -10,17 +10,17 @@ class UserViewModel extends ViewStateModel {
 
   bool get isLogin => _user != null;
 
-  UserInfo get user => _user.data.userInfo;
+  User get user => _user;
 
   init() {
-    var userMap = WanDataStore.getObject(kUser);
-    _user = userMap == null ? null : User.fromMap(userMap);
+    var userMap = WanDataStore.getObjectJsonMap(kUser);
+    _user = userMap == null ? null : User.fromJsonMap(userMap);
     notifyListeners();
   }
 
   updateUserState(User user) {
     _user = user;
     notifyListeners();
-    WanDataStore.saveObject(kUser, user);
+    WanDataStore.saveObject(kUser, user.toJson());
   }
 }

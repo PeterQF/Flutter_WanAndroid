@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wan_android/db/wan_data_store.dart';
-import 'package:flutter_wan_android/model/user_model.dart';
 import 'package:flutter_wan_android/provider/view_state_refresh_list_model.dart';
 import 'package:flutter_wan_android/ui/page/user_page.dart';
 import 'package:flutter_wan_android/view_model/user_view_model.dart';
