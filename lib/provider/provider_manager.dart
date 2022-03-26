@@ -1,5 +1,3 @@
-
-
 import 'package:flutter_wan_android/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -10,5 +8,5 @@ List<SingleChildWidget> providers = [
 
 /// 独立的view model
 List<SingleChildWidget> independentServices = [
-  ChangeNotifierProvider(create: (context) => UserViewModel(),)
+  ChangeNotifierProvider(create: (context) => UserViewModel(),),
 ];

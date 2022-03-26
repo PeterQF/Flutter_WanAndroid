@@ -10,6 +10,7 @@ import 'package:flutter_wan_android/utils/wan_utils.dart';
 import 'package:flutter_wan_android/view_model/user_page_scroll_view_model.dart';
 import 'package:flutter_wan_android/view_model/user_view_model.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 const userPageAppBarHeight = 250;
@@ -34,27 +35,31 @@ class _UserPageState extends State<UserPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      body: ProviderWidget(
-        model: UserPageScrollViewModel(
+      body: ProviderWidget2(
+        model1: UserPageScrollViewModel(
             context, animationController, ScrollController()),
-        onModelReady: (model) => model.init(),
-        builder: (context, model, child) {
-          if (model.isLogin) {
+        model2: Provider.of<UserViewModel>(context),
+        onModelReady: (scrollModel, userModel) {
+          scrollModel.init();
+          userModel.init();
+        },
+        builder: (context, scrollModel, userModel, child) {
+          if (userModel.isLogin) {
             return Listener(
               onPointerMove: (result) {
-                model.updatePicHeight(result.position.dy);
+                scrollModel.updatePicHeight(result.position.dy);
               },
               onPointerUp: (event) {
-                model.runAnimate();
+                scrollModel.runAnimate();
                 animationController.forward(from: 0);
               },
               child: SmartRefresher(
-                  controller: model.refreshController,
+                  controller: scrollModel.refreshController,
                   header: MaterialClassicHeader(),
-                  onRefresh: model.refresh,
+                  onRefresh: scrollModel.refresh,
                   child: CustomScrollView(
                     physics: const ClampingScrollPhysics(),
-                    controller: model.scrollController,
+                    controller: scrollModel.scrollController,
                     slivers: [
                       SliverAppBar(
                         // 先滑动列表到顶部在展开SliverAppBar
@@ -69,11 +74,11 @@ class _UserPageState extends State<UserPage>
                         // 导航栏下面是否一直显示阴影
                         forceElevated: false,
                         expandedHeight:
-                            userPageAppBarHeight + model.extraPicHeight,
+                            userPageAppBarHeight + scrollModel.extraPicHeight,
                         backgroundColor: WanColor.lightBlue,
                         systemOverlayStyle: SystemUiOverlayStyle.light,
                         flexibleSpace: FlexibleSpaceBar(
-                            background: SliverTopBar(model),
+                            background: SliverTopBar(scrollModel),
                             // 先收缩flexibleSpace部分再滑动列表
                             // 背景 固定到位，直到达到最小范围。 默认是CollapseMode.parallax(将以视差方式滚动。)，还有一个是none，滚动没有效果
                             collapseMode: CollapseMode.pin),
@@ -109,7 +114,8 @@ class SliverTopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    String background = model.userViewModel.user.background;
+    UserViewModel userViewModel = Provider.of<UserViewModel>(context);
+    String background = userViewModel.user.background;
     return Stack(
       children: [
         SizedBox(
@@ -124,7 +130,7 @@ class SliverTopBar extends StatelessWidget {
           bottom: 10,
           // 这里设置left时如果设置的width为屏幕宽度，还需要把left减掉，否则最右边的控件会遮住left长度的部分
           width: screenWidth - 16,
-          child: UserInfoWidget(model.userViewModel),
+          child: UserInfoWidget(userViewModel),
         )
       ],
     );

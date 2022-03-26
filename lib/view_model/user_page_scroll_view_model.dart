@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android/provider/view_state_refresh_list_model.dart';
 import 'package:flutter_wan_android/ui/page/user_page.dart';
-import 'package:flutter_wan_android/view_model/user_view_model.dart';
 
 class UserPageScrollViewModel extends ViewStateRefreshListModel {
-
-  UserViewModel _userViewModel;
-  bool get isLogin => _userViewModel.isLogin;
-
-  UserViewModel get userViewModel => _userViewModel;
 
   final BuildContext context;
   final AnimationController animationController;
@@ -62,9 +56,6 @@ class UserPageScrollViewModel extends ViewStateRefreshListModel {
         updatePicHeight(0.0);
       }
     });
-    _userViewModel = UserViewModel();
-    _userViewModel.init();
-    notifyListeners();
   }
 
   @override

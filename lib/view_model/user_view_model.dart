@@ -15,7 +15,6 @@ class UserViewModel extends ViewStateModel {
   init() {
     var userMap = WanDataStore.getObjectJsonMap(kUser);
     _user = userMap == null ? null : User.fromJsonMap(userMap);
-    notifyListeners();
   }
 
   updateUserState(User user) {
