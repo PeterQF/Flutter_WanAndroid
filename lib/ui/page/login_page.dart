@@ -5,8 +5,8 @@ import 'package:flutter_wan_android/provider/provider_widget.dart';
 import 'package:flutter_wan_android/route/wan_route.dart';
 import 'package:flutter_wan_android/ui/widget/custom_text_field.dart';
 import 'package:flutter_wan_android/utils/screen_utils.dart';
+import 'package:flutter_wan_android/utils/toast_utils.dart';
 import 'package:flutter_wan_android/view_model/login_view_model.dart';
-import 'package:flutter_wan_android/view_model/user_page_scroll_view_model.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../widget/button_progress_indicator.dart';
@@ -212,6 +212,7 @@ class LoginButton extends StatelessWidget {
                           .login(nameController.text, passwordController.text)
                           .then((value) {
                         if (value) {
+                          ToastUtils.show("登录成功");
                           Navigator.of(context).pop(true);
                         } else {
                           loginViewModel.showErrorMessage(context);

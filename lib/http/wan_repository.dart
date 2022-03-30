@@ -53,11 +53,21 @@ class WanRepository {
     return categories;
   }
 
+  // 登录
   // [WanNetClient._init]添加了拦截器 设置了自动cookie.
   static Future login(String username, String password) async {
     var response = await WanNetClient.getInstance.post('/user/login', queryParameters: {
       'username': username,
       'password': password,
+    });
+    return User.fromJsonMap(response.data);
+  }
+
+  static Future register(String username, String password, String rePassword) async {
+    var response = await WanNetClient.getInstance.post('/user/register', queryParameters: {
+      'username': username,
+      'password': password,
+      'repassword': rePassword,
     });
     return User.fromJsonMap(response.data);
   }
