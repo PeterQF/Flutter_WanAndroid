@@ -6,6 +6,7 @@ class ActionButton extends StatelessWidget {
   final double width;
   final double height;
   final Function onPressed;
+  final double radius;
 
   const ActionButton({
     Key key,
@@ -14,6 +15,7 @@ class ActionButton extends StatelessWidget {
     this.width = double.infinity,
     this.height = 50.0,
     this.onPressed,
+    this.radius = 25.0
   }) : super(key: key);
 
   @override
@@ -22,7 +24,7 @@ class ActionButton extends StatelessWidget {
       width: width,
       height: 50.0,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25.0),
+          borderRadius: BorderRadius.circular(radius),
           gradient: LinearGradient(
             colors: <Color>[
               Color.fromRGBO(142, 197, 252, 1.0),
@@ -33,7 +35,7 @@ class ActionButton extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
             onTap: onPressed,
-            borderRadius: BorderRadius.circular(25.0),
+            borderRadius: BorderRadius.circular(radius),
             child: Center(
               child: child,
             )),

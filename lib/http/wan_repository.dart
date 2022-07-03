@@ -3,6 +3,7 @@ import 'package:flutter_wan_android/model/article_model.dart';
 import 'package:flutter_wan_android/model/banner_model.dart';
 import 'package:flutter_wan_android/model/category_model.dart';
 import 'package:flutter_wan_android/model/navigation_site_model.dart';
+import 'package:flutter_wan_android/model/user_info_model.dart';
 import 'package:flutter_wan_android/model/user_model.dart';
 
 class WanRepository {
@@ -70,5 +71,10 @@ class WanRepository {
       'repassword': rePassword,
     });
     return User.fromJsonMap(response.data);
+  }
+
+  static Future fetchUserInfo() async {
+    var response = await WanNetClient.getInstance.get('/user/lg/userinfo/json');
+    return UserInfoData.fromJson(response.data);
   }
 }

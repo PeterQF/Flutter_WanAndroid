@@ -5,6 +5,7 @@ import 'package:flutter_wan_android/app/wan_color.dart';
 import 'package:flutter_wan_android/model/user_model.dart';
 import 'package:flutter_wan_android/provider/provider_widget.dart';
 import 'package:flutter_wan_android/route/wan_route.dart';
+import 'package:flutter_wan_android/ui/widget/action_button.dart';
 import 'package:flutter_wan_android/utils/screen_utils.dart';
 import 'package:flutter_wan_android/utils/wan_utils.dart';
 import 'package:flutter_wan_android/view_model/user_page_scroll_view_model.dart';
@@ -201,9 +202,13 @@ class UserInfoWidget extends StatelessWidget {
                 style: TextStyle(fontSize: 12, color: WanColor.white),
                 textAlign: TextAlign.center),
             Expanded(child: SizedBox.shrink()),
-            Text(
-              "编辑资料",
-              style: TextStyle(fontSize: 14, color: WanColor.white),
+            ActionButton(
+              width: 60,
+              height: 40,
+              child: Text(
+                "编辑资料",
+                style: TextStyle(fontSize: 14, color: WanColor.white),
+              ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
